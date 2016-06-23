@@ -1,0 +1,26 @@
+# -*- coding: utf-8 -*-
+"""
+здесь будут представления - обработчики, которые отвечают на запросы веб-браузера
+"""
+from flask import render_template, flash, redirect
+from app import appFlask  # из папки app импортируем экземпляр класса Flask
+from forms import LoginForm
+
+
+
+@appFlask.route('/')
+@appFlask.route('/index')
+def index():
+    user = { 'nickname': 'Zhan' } # выдуманный пользователь
+    return render_template("index.html", title='Home', user=user)
+
+
+
+
+@appFlask.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        flash('Email="' + form.email.data + '", password="' + form.password.data + '" remember_me=' + str(form.remember_me.data))
+        return redirect('/index')
+    return render_template('login.html', title = 'Sign In', form = form)
