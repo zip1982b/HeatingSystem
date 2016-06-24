@@ -4,19 +4,35 @@
 {% block content %}
  <!-- MAIN CONTENT -->
 	<div class="container content container-fluid" id="home">
-            <h1>Sign In</h1>
+        <div class="row-fluid">
             <form action="" method="post" name="login">
-                {{form.hidden_tag()}}
-                <p>
-                    Please enter your Email:<br>
-                    {{form.email(size=30)}}<br>
-                </p>
-                <p>
-                    Please enter your Password:<br>
-                    {{form.password(size=30)}}<br>
-                </p>
-                <p>{{form.remember_me}} Remember Me</p>
-                <p><input type="submit" value="Sign In"></p>
+                <fieldset>
+                    <div class="control-group">
+                        <div class="controls">
+                            <h1>Sign In</h1>
+                            {{form.hidden_tag()}}
+                            Введите свой Email:<br>
+                            {{form.email(size=20)}}<br>
+                            {% for error in form.errors.email %}
+                            <span style="color: red;">[{{error}}]</span>
+                            {% endfor %}<br>
+                        </div>
+                        <div class="controls">
+                            Введите свой пароль:<br>
+                            {{form.password(size=20)}}<br>
+                            {% for error in form.errors.password %}
+                            <span style="color: red;">[{{error}}]</span>
+                            {% endfor %}<br>
+                        </div>
+                        <div class="controls">
+                            {{form.remember_me}} Запомнить
+                        </div>
+                        <div class="controls">
+                            <input type="submit" class="btn btn-primary" value="Войти">
+                        </div>
+                    </div>
+                </fieldset>
             </form>
+        </div>
     </div>
 {% endblock %}

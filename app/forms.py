@@ -11,7 +11,7 @@ DataRequired это класс, который может быть прикре�
 
 
 class LoginForm(Form):
-    email = StringField('E-mail', validators=[Email(), DataRequired()])
+    email = StringField('E-mail', validators=[Email(),DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
     remember_me = BooleanField('remember_me', default=False)
 
