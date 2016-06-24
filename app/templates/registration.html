@@ -5,15 +5,23 @@
  <!-- MAIN CONTENT -->
 	<div class="container content container-fluid" id="home">
         <div class="row-fluid">
-            <form action="" method="post" name="login">
+            <form action="" method="post" name="registration">
                 <fieldset>
                     <div class="control-group">
                         <div class="controls">
-                            <h1>Sign In</h1>
+                            <h1>Registration</h1>
                             {{form.hidden_tag()}}
                             Введите свой логин:<br>
                             {{form.user(size=20)}}<br>
                             {% for error in form.errors.user %}
+                            <span style="color: red;">[{{error}}]</span>
+                            {% endfor %}<br>
+                        </div>
+                        <div class="controls">
+                            {{form.hidden_tag()}}
+                            Введите свой Email:<br>
+                            {{form.email(size=20)}}<br>
+                            {% for error in form.errors.email %}
                             <span style="color: red;">[{{error}}]</span>
                             {% endfor %}<br>
                         </div>
@@ -25,21 +33,15 @@
                             {% endfor %}<br>
                         </div>
                         <div class="controls">
-                            {{form.remember_me}} Запомнить
+                            Повторите пароль:<br>
+                            {{form.password_repeat(size=20)}}<br>
+                            {% for error in form.errors.password_repeat %}
+                            <span style="color: red;">[{{error}}]</span>
+                            {% endfor %}<br>
                         </div>
                         <div class="controls">
-                            <input type="submit" class="btn btn-primary" value="Войти">
+                            <input type="submit" class="btn btn-primary" value="Зарегистрироваться">
                         </div>
-                        <hr>
-                    {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                    <ul>
-                    {% for message in messages %}
-                        <li>{{ message }} </li>
-                    {% endfor %}
-                    </ul>
-                    {% endif %}
-                    {% endwith %}
                     </div>
                 </fieldset>
             </form>

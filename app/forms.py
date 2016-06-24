@@ -11,12 +11,13 @@ DataRequired это класс, который может быть прикре�
 
 
 class LoginForm(Form):
-    email = StringField('E-mail', validators=[Email(),DataRequired()])
+    user = StringField('Логин', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
     remember_me = BooleanField('remember_me', default=False)
 
 
 class RegistrationForm(LoginForm):
+    email = StringField('E-mail', validators=[Email(),DataRequired()])
     password_repeat = PasswordField('Повторите пароль', validators=[DataRequired(), EqualTo('password')])
 
 
