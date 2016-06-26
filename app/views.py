@@ -2,9 +2,13 @@
 """
 здесь будут представления - обработчики, которые отвечают на запросы веб-браузера
 """
-from flask import render_template, flash, redirect
-from app import appFlask  # из папки app импортируем экземпляр класса Flask
+from flask import render_template, flash, redirect, session, url_for, request, g
+from flask.ext.login import login_user, logout_user, current_user, login_required
+from app import appFlask, db, models, lm   # из папки app импортируем экземпляр класса Flask
 from forms import LoginForm, RegistrationForm
+from models import User
+
+
 
 
 
@@ -30,9 +34,12 @@ def login():
 @appFlask.route('/registration', methods = ['GET', 'POST'])
 def registration():
     form = RegistrationForm()
-    if form.validate_on_submit():
-        flash('User="' + form.user.data + '", email="' + form.email.data + '", password="' + form.password.data + '", repeat pass="' + form.password_repeat.data)
-        return redirect('/login')
+    if request.method == 'POST' and form.validate_on_submit():
+        u = models.User(nickname=form.user.data, email=form.email.data, password=form.password.data)
+        db.session.add(u)
+        flash('Thanks for registering')
+        db.session.commit()
+        return redirect(url_for('login'))
     return render_template('registration.html', title = 'Sign In', form = form)
 
 
