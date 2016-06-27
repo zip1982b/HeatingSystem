@@ -11,24 +11,67 @@ from models import User
 
 
 
+# Чтобы найти объект User уже авторизованного пользователя, при его последующих запросах исходя из ID который хранится в его сессии.
+# Поиск пользователя в базе данных по его ID
+# вернёт None, если ID не существует
+# вернёт объект User, если пользователь с таким ID существует
+@lm.user_loader
+def load_user(id):
+    #print models.User.query.get(int(id))
+    return models.User.query.get(int(id))
+
+# ID который хранится в его сессии.
+@appFlask.before_request
+def before_request():
+    g.user = current_user
+
+
 
 @appFlask.route('/')
 @appFlask.route('/index')
+@login_required
 def index():
-    user = { 'nickname': 'Zhan' } # выдуманный пользователь
+    user = g.user
     return render_template("index.html", title='Home', user=user)
+
+
+
+
+
+
+
+def get_user(arg_login, arg_pwd):
+    users = models.User.query.all()
+    for u in users:
+        if arg_login == u.nickname and arg_pwd == u.password:
+            return u
+    else:
+        return None
+
+
+
+
+
+
+
 
 
 
 
 @appFlask.route('/login', methods = ['GET', 'POST'])
 def login():
+    # авторизированный пользователь
+    if g.user is not None and g.user.is_authenticated:
+        return redirect(url_for('index'))
     form = LoginForm()
-    if form.validate_on_submit():
-        flash('User="' + form.user.data + '", password="' + form.password.data + '" remember_me=' + str(form.remember_me.data))
-        return redirect('/index')
+    # не авторизированнный пользователь
+    if form.validate_on_submit() and request.method == "POST":
+        session['remember_me'] = form.remember_me.data
+        user = get_user(form.user.data, form.password.data)
+        if user:
+            login_user(user)
+            return redirect(url_for("index"))
     return render_template('login.html', title = 'Sign In', form = form)
-
 
 
 @appFlask.route('/registration', methods = ['GET', 'POST'])
@@ -40,9 +83,13 @@ def registration():
         flash('Thanks for registering')
         db.session.commit()
         return redirect(url_for('login'))
-    return render_template('registration.html', title = 'Sign In', form = form)
+    return render_template('registration.html', title = 'Registr', form = form)
 
 
 
+@appFlask.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 
