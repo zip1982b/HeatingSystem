@@ -6,7 +6,7 @@
 			<div class="container">
 
 				<a class="brand pull-left" href="#">
-				FlexApp
+				Система отопления
 				</a>
 
 				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -18,15 +18,15 @@
 				<div class="nav-collapse collapse">
 					<ul class="nav pull-right">
 						{% if g.user.is_authenticated %}
-        				<li><a href="/logout">Logout</a></li>
+        				<li><a href="/logout">Выйти</a></li>
         				{% endif %}
 					</ul>
 					<ul id="nav-list" class="nav pull-right">
-						<li><a href="#home">Home</a></li>
-						<li><a href="#about">About</a></li>
-						<li><a href="#updates">Updates</a></li>
-						<li><a href="#screenshots">Screenshots</a></li>
-						<li><a href="#contact">Contact</a></li>
+						<li><a href="#home">Главная</a></li>
+						<li><a href="#about">Настройки</a></li>
+						<li><a href="#updates">График работы</a></li>
+						<li><a href="#screenshots">Сообщения об ошибках</a></li>
+						<li><a href="#contact">Логи</a></li>
 					</ul>
 
 				</div>
@@ -119,26 +119,37 @@
 
 
 
-		<!-- ABOUT & UPDATES -->
+		<!-- Настройки & График работы -->
 		<div class="row-fluid" id="about">
 
 			<div class="span6">
 				<h2 class="page-title" id="scroll_up">
-					About
+					Настройки
 					<a href="#home" class="arrow-top">
 					<img src="static/img/arrow-top.png">
 					</a>
 				</h2>
+				<form id="emit" method="POST" action='#'>
+					<label for="selectDay">Выбрать день недели</label>
+					<select name="daysOfTheWeek" id="selectDay">
+						<option value="monday" selected>Понедельник</option>
+						<option value="tuesday">Вторник</option>
+						<option value="wednesday">Среда</option>
+						<option value="thursday">Четверг</option>
+						<option value="friday">Пятница</option>
+						<option value="saturday">Суббота</option>
+						<option value="sunday">Воскресенье</option>
+					</select><br>
+					<input type="text" name="emit_data" id="emit_data" placeholder="Message">
+					<input type="submit" value="Echo">
+   				 </form>
 
-				<p>FlexApp is a fully responsive HTML/CSS template perfect for marketing your mobile application. The template utilizes responsive CSS3 & jQuery technology to provide a consistent and enjoyable viewing experience across multiple devices.</p>
-				<p>FlexApp is 100% free to use. You may change, edit or modify the template however you wish, for free or commercial projects.</p>
-				<p><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">FlexApp</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.trippoinc.com" property="cc:attributionName" rel="cc:attributionURL">Trippo</a> is licensed under <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.<br />Built on <a xmlns:dct="http://purl.org/dc/terms/" href="http://twitter.github.com/bootstrap/" rel="dct:source">Bootstrap</a>.</p>
 
 			</div>
 
 			<div class="span6 updates" id="updates">
 				<h2 class="page-title" id="scroll_up">
-					Updates
+					График работы
 					<a href="#home" class="arrow-top">
 					<img src="static/img/arrow-top.png">
 					</a>
@@ -179,7 +190,7 @@
 		<div class="row-fluid" id="screenshots">
 
 			<h2 class="page-title" id="scroll_up">
-					Screenshots
+					Сообщения об ошибках
 					<a href="#home" class="arrow-top">
 					<img src="static/img/arrow-top.png">
 					</a>
@@ -246,7 +257,7 @@
 		<div class="row-fluid" id="contact">
 
 			<h2 class="page-title" id="scroll_up">
-					Contact
+					Логи
 					<a href="#home" class="arrow-top">
 					<img src="static/img/arrow-top.png">
 					</a>
