@@ -23,7 +23,7 @@
 					</ul>
 					<ul id="nav-list" class="nav pull-right">
 						<li><a href="#home">Главная</a></li>
-						<li><a href="#about">Настройки</a></li>
+						<li><a href="#settings">Настройки</a></li>
 						<li><a href="#updates">График работы</a></li>
 						<li><a href="#screenshots">Сообщения об ошибках</a></li>
 						<li><a href="#contact">Логи</a></li>
@@ -120,15 +120,16 @@
 
 
 		<!-- Настройки & График работы -->
-		<div class="row-fluid" id="about">
+		<div class="row-fluid" id="settings">
 
-			<div class="span6">
+			<div class="span6 settings">
 				<h2 class="page-title" id="scroll_up">
 					Настройки
 					<a href="#home" class="arrow-top">
 					<img src="static/img/arrow-top.png">
 					</a>
 				</h2>
+                <h3>Недельное программирование</h3>
 				<form id="emit" method="POST" action='#'>
 					<label for="selectDay">Выбрать день недели</label>
 					<select name="daysOfTheWeek" id="selectDay">
@@ -140,9 +141,16 @@
 						<option value="saturday">Суббота</option>
 						<option value="sunday">Воскресенье</option>
 					</select><br>
-					<input type="text" name="emit_data" id="emit_data" placeholder="Message">
-					<input type="submit" value="Echo">
+                    <label for="emit_data">Установить время с (часов):</label>
+					<input type="time" name="emit_data" id="emit_data" placeholder="set time"><br>
+                    <label for="emit_data">Установить время по (часов):</label>
+					<input type="time" name="emit_data" id="emit_data" placeholder="set time"><br>
+                    <label for="slider1">Установить температуру (°C):</label>
+                    <input id="slider1" class="sync" type="range" min="16" max="25" value="{{slider1}}" /> <br>
+					<input type="submit" value="Создать расписание">
    				 </form>
+
+
 
 
 			</div>

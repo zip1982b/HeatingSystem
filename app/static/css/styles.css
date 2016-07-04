@@ -126,7 +126,14 @@ h2 {
 	
 	
 /***** ABOUT PAGE *****/
+/* #selectDay {
+	width: 135px;
+}
 
+#emit_data {
+	width: 80px;
+}
+*/
 .updates ul {
 	list-style: none;
 	padding-top: 10px;
