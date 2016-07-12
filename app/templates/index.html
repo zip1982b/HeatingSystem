@@ -129,7 +129,7 @@
 					<img src="static/img/arrow-top.png">
 					</a>
 				</h2>
-                <h3>Недельное программирование</h3>
+                <h3>Суточное программирование</h3>
 				<form id="emit" method="POST" action='#'>
 					<label for="selectDay">Выбрать день недели</label>
 					<select name="daysOfTheWeek" id="selectDay">
@@ -141,14 +141,17 @@
 						<option value="saturday">Суббота</option>
 						<option value="sunday">Воскресенье</option>
 					</select><br>
-                    <label for="emit_data">Установить время с (часов):</label>
+                    <label for="emit_data">Установить временной интервал с:</label>
+					<input type="time" name="emit_data" id="emit_data" placeholder="set time">
+                    <label for="emit_data">по:</label>
 					<input type="time" name="emit_data" id="emit_data" placeholder="set time"><br>
-                    <label for="emit_data">Установить время по (часов):</label>
-					<input type="time" name="emit_data" id="emit_data" placeholder="set time"><br>
-                    <label for="slider1">Установить температуру (°C):</label>
-                    <input id="slider1" class="sync" type="range" min="16" max="25" value="{{slider1}}" /> <br>
+                    <label for="slider1">Установить температуру: <output for="slider1" id="volume">20</output>°C:</label>
+                    <input id="slider1" type="range" min="16" max="25" step="0.5" oninput="outputUpdate(value)"><br>
 					<input type="submit" value="Создать расписание">
+
    				 </form>
+
+
 
 
 

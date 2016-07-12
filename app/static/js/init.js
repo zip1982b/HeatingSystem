@@ -8,3 +8,8 @@ $(function(){
 		 },1500);
 	 });
  });
+
+
+function outputUpdate(vol) {
+	document.querySelector('#volume').value = vol;
+}
