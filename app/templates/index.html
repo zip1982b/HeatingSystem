@@ -141,14 +141,13 @@
 						<option value="saturday">Суббота</option>
 						<option value="sunday">Воскресенье</option>
 					</select><br>
-                    <label for="emit_data">Установить временной интервал с:</label>
-					<input type="time" name="emit_data" id="emit_data" placeholder="set time">
-                    <label for="emit_data">по:</label>
-					<input type="time" name="emit_data" id="emit_data" placeholder="set time"><br>
-                    <label for="slider1">Установить температуру: <output for="slider1" id="volume">20</output>°C:</label>
+                    <label for="set_time1">Установить временной интервал с:</label>
+					<input type="time" name="time_data" id="set_time1" placeholder="set time">
+                    <label for="set_time2">по:</label>
+					<input type="time" name="time_data" id="set_time2" placeholder="set time"><br>
+                    <label for="slider1">Установить температуру: <output for="slider1" id="volume"></output>°C:</label>
                     <input id="slider1" type="range" min="16" max="25" step="0.5" oninput="outputUpdate(value)"><br>
 					<input type="submit" value="Создать расписание">
-
    				 </form>
 
 
@@ -168,7 +167,8 @@
 
 				<!-- UPDATES & RELEASE NOTES -->
 
-				<h2>Пример</h2>
+				<h2>Receive namespace test1:</h2>
+    				<div id="log_test1"></div>
 
 				<h3 class="version">Version 1.1</h3>
 				<span class="release-date">Released on January 28th, 2012</span>

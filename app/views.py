@@ -2,11 +2,37 @@
 """
 здесь будут представления - обработчики, которые отвечают на запросы веб-браузера
 """
+
+
+import eventlet
+eventlet.monkey_patch()
+
+import time
+from threading import Thread
+
+
+from flask_socketio import SocketIO, emit, disconnect
+
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import appFlask, db, models, lm   # из папки app импортируем экземпляр класса Flask
 from forms import LoginForm, RegistrationForm
 from models import User
+
+
+socketio = SocketIO(appFlask, async_mode='eventlet')
+thread = None
+
+def background_thread():
+    """Example of how to send server generated events to clients."""
+    count = 0
+    while True:
+        time.sleep(10)
+        count += 1
+        socketio.emit('Server response',
+                      {'data': 'Server generated event and send to client', 'count': count},
+                      namespace='/test1')
+
 
 
 
@@ -31,8 +57,51 @@ def before_request():
 @appFlask.route('/index')
 @login_required
 def index():
+    global thread
+    if thread is None:
+        thread = Thread(target=background_thread)
+        thread.daemon = True
+        thread.start()
     user = g.user
     return render_template("index.html", title='Home', user=user)
+
+
+# ************** Приём данных и их переотправка по web socket***********************************************
+# принимает сообщения в формате {u'data': u'тут распологаются сами данные!'}
+# 'server receives data' - название события
+# namespace='/test' - позволяют клиенту открыть несколько подключений к серверу,
+# который мультиплексированы на одном сокете. Если пространство имен не указано
+# события привязаны к глобальному пространству имен по умолчанию.
+@socketio.on('server receives data', namespace='/test1')
+def test_message(message):
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('Server response',
+         {'data': message['data'], 'count': session['receive_count']})
+
+
+
+# *********** отключение клиента ************************************************
+# Приняли запрос от клиента, на отключение
+# отослали клиенту сообщение что он отключен
+# и произвели отключение вызвав disconnect()
+# вывели на сервере сообщение, что клиент отключен
+@socketio.on('disconnect request', namespace='/test1')
+def disconnect_request():
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('Server response',
+         {'data': 'Disconnected!', 'count': session['receive_count']})
+    disconnect()
+
+@socketio.on('disconnect', namespace='/test1')
+def test_disconnect():
+    print('Client disconnected', request.sid)
+#*********************************************************************************
+
+# **********отправка сообщения клиенту (в его namespace test1)что сервер подключен***************************************************
+@socketio.on('connect', namespace='/test1')
+def test_connect():
+    emit('Server response', {'data': 'Server is Connected!', 'count': 0})
+    print("Server is connected")
 
 
 
