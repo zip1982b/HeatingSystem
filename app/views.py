@@ -4,34 +4,20 @@
 """
 
 
-import eventlet
-eventlet.monkey_patch()
-
-import time
-from threading import Thread
 
 
-from flask_socketio import SocketIO, emit, disconnect
+
 
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
-from app import appFlask, db, models, lm   # из папки app импортируем экземпляр класса Flask
+from app import appFlask, db, models, lm, Thread, background_thread, socketio, emit, disconnect, thread  # из папки app импортируем экземпляр класса Flask
 from forms import LoginForm, RegistrationForm
 from models import User
 
 
-socketio = SocketIO(appFlask, async_mode='eventlet')
-thread = None
 
-def background_thread():
-    """Example of how to send server generated events to clients."""
-    count = 0
-    while True:
-        time.sleep(10)
-        count += 1
-        socketio.emit('Server response',
-                      {'data': 'Server generated event and send to client', 'count': count},
-                      namespace='/test1')
+
+
 
 
 
@@ -66,7 +52,7 @@ def index():
     return render_template("index.html", title='Home', user=user)
 
 
-# ************** Приём данных и их переотправка по web socket***********************************************
+# ************** Приём данных и их переотправка***********************************************
 # принимает сообщения в формате {u'data': u'тут распологаются сами данные!'}
 # 'server receives data' - название события
 # namespace='/test' - позволяют клиенту открыть несколько подключений к серверу,
@@ -102,8 +88,6 @@ def test_disconnect():
 def test_connect():
     emit('Server response', {'data': 'Server is Connected!', 'count': 0})
     print("Server is connected")
-
-
 
 
 
