@@ -35,6 +35,8 @@ $(document).ready(function(){
                 $('#log_test1').text('Received #' + msg.count + ': ' + msg.data);
             });
 
+
+
             //**********************************************************************************************
 
 
@@ -54,10 +56,11 @@ $(document).ready(function(){
             // handlers for the different forms in the page
             // these send data to the server in a variety of ways
             $('form#emit').submit(function(event) {
-                socket1.emit('server receives data', {data: $('#selectDay').val()});
-                console.log({data: $('#selectDay').val()});
+                socket1.emit('server receives data', {selectDay: $('#selectDay').val(), set_time1: $('#set_time1').val(), set_time2: $('#set_time2').val() });
+                console.log({selectDay: $('#selectDay').val(), set_time1: $('#set_time1').val(), set_time2: $('#set_time2').val()});
                 return false;
             });
+
 
 
 

@@ -3,19 +3,11 @@
 здесь будут представления - обработчики, которые отвечают на запросы веб-браузера
 """
 
-
-
-
-
-
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import appFlask, db, models, lm, Thread, background_thread, socketio, emit, disconnect, thread  # из папки app импортируем экземпляр класса Flask
 from forms import LoginForm, RegistrationForm
 from models import User
-
-
-
 
 
 
@@ -54,15 +46,23 @@ def index():
 
 # ************** Приём данных и их переотправка***********************************************
 # принимает сообщения в формате {u'data': u'тут распологаются сами данные!'}
-# 'server receives data' - название события
+# 'server receives data' - название события - такое же название события на стороне клиента в колбеке
 # namespace='/test' - позволяют клиенту открыть несколько подключений к серверу,
 # который мультиплексированы на одном сокете. Если пространство имен не указано
 # события привязаны к глобальному пространству имен по умолчанию.
 @socketio.on('server receives data', namespace='/test1')
-def test_message(message):
+def setings(json):
+    print('received json: ' + str(json))
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('Server response', {'data': json, 'count': session['receive_count']})
+"""def test_message(message):
+    print('received message: ' + message)
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('Server response',
-         {'data': message['data'], 'count': session['receive_count']})
+         {'data': message['data'], 'count': session['receive_count']})"""
+
+
+
 
 
 

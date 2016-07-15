@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-async_mode = 'eventlet'
 import eventlet
 eventlet.monkey_patch()
 
@@ -26,7 +25,7 @@ appFlask = Flask(__name__)  # создаём объект приложения (
 appFlask.config.from_object('config')
 db = SQLAlchemy(appFlask)
 
-socketio = SocketIO(appFlask, async_mode=async_mode)
+socketio = SocketIO(appFlask, async_mode='eventlet')
 thread = None
 
 def background_thread():
