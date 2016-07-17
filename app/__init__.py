@@ -36,7 +36,7 @@ def background_thread():
         count += 1
         socketio.emit('Server response',
                       {'data': 'Server generated event and send to client', 'count': count},
-                      namespace='/test1')
+                      namespace='/temperature_setting')
 
 
 

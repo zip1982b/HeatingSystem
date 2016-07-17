@@ -3,6 +3,7 @@
 здесь будут представления - обработчики, которые отвечают на запросы веб-браузера
 """
 
+# Подключение модулей
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import appFlask, db, models, lm, Thread, background_thread, socketio, emit, disconnect, thread  # из папки app импортируем экземпляр класса Flask
@@ -44,17 +45,24 @@ def index():
     return render_template("index.html", title='Home', user=user)
 
 
-# ************** Приём данных и их переотправка***********************************************
-# принимает сообщения в формате {u'data': u'тут распологаются сами данные!'}
+# ************** Приём данных по web socket и их обработка***********************************************
+# принимает сообщения в json формате {u'data': u'тут распологаются сами данные!'}
 # 'server receives data' - название события - такое же название события на стороне клиента в колбеке
-# namespace='/test' - позволяют клиенту открыть несколько подключений к серверу,
+# namespace='/temperature_setting' - позволяют клиенту открыть несколько подключений к серверу,
 # который мультиплексированы на одном сокете. Если пространство имен не указано
-# события привязаны к глобальному пространству имен по умолчанию.
-@socketio.on('server receives data', namespace='/test1')
+# события привязаны к глобальному пространству имен по умолчанию
+@socketio.on('server receives data', namespace='/temperature_setting')
 def setings(json):
     print('received json: ' + str(json))
     session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('Server response', {'data': json, 'count': session['receive_count']})
+    emit('Server errors', {'data': 'Неправильно установлен временной интервал', 'count': session['receive_count']})
+
+
+
+
+
+
+
 """def test_message(message):
     print('received message: ' + message)
     session['receive_count'] = session.get('receive_count', 0) + 1
@@ -71,20 +79,20 @@ def setings(json):
 # отослали клиенту сообщение что он отключен
 # и произвели отключение вызвав disconnect()
 # вывели на сервере сообщение, что клиент отключен
-@socketio.on('disconnect request', namespace='/test1')
+@socketio.on('disconnect request', namespace='/temperature_setting')
 def disconnect_request():
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('Server response',
          {'data': 'Disconnected!', 'count': session['receive_count']})
     disconnect()
 
-@socketio.on('disconnect', namespace='/test1')
+@socketio.on('disconnect', namespace='/temperature_setting')
 def test_disconnect():
     print('Client disconnected', request.sid)
 #*********************************************************************************
 
-# **********отправка сообщения клиенту (в его namespace test1)что сервер подключен***************************************************
-@socketio.on('connect', namespace='/test1')
+# **********отправка сообщения клиенту (в его namespace - temperature_setting)что сервер подключен***************************************************
+@socketio.on('connect', namespace='/temperature_setting')
 def test_connect():
     emit('Server response', {'data': 'Server is Connected!', 'count': 0})
     print("Server is connected")
