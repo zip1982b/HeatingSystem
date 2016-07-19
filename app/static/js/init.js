@@ -47,15 +47,15 @@ $(document).ready(function(){
             // не отвечает за само соединение, только когда произошло событие connect, тогда отсылаем сообщение
 
             socket1.on('connect', function() {
-                //socket1.emit("server receives data", user);
-                //var user = { "name": "Вася", "age": 35, "isAdmin": false, "friends": [0,1,2,3] };
-                socket1.emit("server receives data", {data: 'Client is connected! test1'}); //{data: 'Client is connected! test1'}
+                socket1.emit("server receives data", {data: 'Client is connected! (/temperature_setting) '}); //{data: 'Client is connected! test1'}
+
             });
 
             // handlers for the different forms in the page
             // these send data to the server in a variety of ways
+            // проверку на корректность вводимых данных проводить на стороне клиента, если все данные коректные, то отправлять на сервер.
             $('form#emit').submit(function(event) {
-                socket1.emit('server receives data', {selectDay: $('#selectDay').val(), set_time1: $('#set_time1').val(), set_time2: $('#set_time2').val(), slider1: $('#slider1').val()});
+                socket1.emit("server receives data", {selectDay: $('#selectDay').val(), set_time1: $('#set_time1').val(), set_time2: $('#set_time2').val(), slider1: $('#slider1').val()});
                 console.log({selectDay: $('#selectDay').val(), set_time1: $('#set_time1').val(), set_time2: $('#set_time2').val(), slider1: $('#slider1').val()});
                 if ($('#set_time2').val()< $('#set_time1').val()){
 					alert('Неправильно установлен временной интервал');

@@ -51,45 +51,28 @@ def index():
 # namespace='/temperature_setting' - позволяют клиенту открыть несколько подключений к серверу,
 # который мультиплексированы на одном сокете. Если пространство имен не указано
 # события привязаны к глобальному пространству имен по умолчанию
+#@socketio.on('server receives data', namespace='/temperature_setting')
+#def settings(message):
+ #   print(message)
+
+
 @socketio.on('server receives data', namespace='/temperature_setting')
-def setings(json):
-    print('received json: ' + str(json))
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('Server errors', {'data': 'Неправильно установлен временной интервал', 'count': session['receive_count']})
+def data(json):
+    if len(json)== 4:
+        if json['set_time2'] and json['set_time1'] and json['set_time2']>json['set_time1']:
+            print('Сохраняем данные в базу данных')
+            print('received json: ' + str(json))
+        else:
+            session['receive_count'] = session.get('receive_count', 0) + 1
+            emit('Server errors', {'data': 'Неправильно установлен временной интервал', 'count': session['receive_count']})
+    else:
+        pass
+        print('received json: ' + str(json))
 
 
 
 
 
-
-
-"""def test_message(message):
-    print('received message: ' + message)
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('Server response',
-         {'data': message['data'], 'count': session['receive_count']})"""
-
-
-
-
-
-
-# *********** отключение клиента ************************************************
-# Приняли запрос от клиента, на отключение
-# отослали клиенту сообщение что он отключен
-# и произвели отключение вызвав disconnect()
-# вывели на сервере сообщение, что клиент отключен
-@socketio.on('disconnect request', namespace='/temperature_setting')
-def disconnect_request():
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('Server response',
-         {'data': 'Disconnected!', 'count': session['receive_count']})
-    disconnect()
-
-@socketio.on('disconnect', namespace='/temperature_setting')
-def test_disconnect():
-    print('Client disconnected', request.sid)
-#*********************************************************************************
 
 # **********отправка сообщения клиенту (в его namespace - temperature_setting)что сервер подключен***************************************************
 @socketio.on('connect', namespace='/temperature_setting')
