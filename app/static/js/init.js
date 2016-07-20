@@ -55,11 +55,15 @@ $(document).ready(function(){
             // these send data to the server in a variety of ways
             // проверку на корректность вводимых данных проводить на стороне клиента, если все данные коректные, то отправлять на сервер.
             $('form#emit').submit(function(event) {
-                socket1.emit("server receives data", {selectDay: $('#selectDay').val(), set_time1: $('#set_time1').val(), set_time2: $('#set_time2').val(), slider1: $('#slider1').val()});
-                console.log({selectDay: $('#selectDay').val(), set_time1: $('#set_time1').val(), set_time2: $('#set_time2').val(), slider1: $('#slider1').val()});
-                if ($('#set_time2').val()< $('#set_time1').val()){
-					alert('Неправильно установлен временной интервал');
-				}
+                if (($('#set_time2').val()<=$('#set_time1').val()) || $('#set_time2').val()==false || $('#set_time1').val()==false){
+                    alert('Неправильно установлен временной интервал');
+                    $('#log_err').text("error: Неправильно установлен временной интервал");
+                } else {
+                    socket1.emit("server receives data", {selectDay: $('#selectDay').val(), set_time1: $('#set_time1').val(), set_time2: $('#set_time2').val(), slider1: $('#slider1').val()});
+                    console.log({selectDay: $('#selectDay').val(), set_time1: $('#set_time1').val(), set_time2: $('#set_time2').val(), slider1: $('#slider1').val()});
+                    $('#log_err').text("");
+                }
+
 				return false;
             });
 

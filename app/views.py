@@ -58,15 +58,6 @@ def index():
 
 @socketio.on('server receives data', namespace='/temperature_setting')
 def data(json):
-    if len(json)== 4:
-        if json['set_time2'] and json['set_time1'] and json['set_time2']>json['set_time1']:
-            print('Сохраняем данные в базу данных')
-            print('received json: ' + str(json))
-        else:
-            session['receive_count'] = session.get('receive_count', 0) + 1
-            emit('Server errors', {'data': 'Неправильно установлен временной интервал', 'count': session['receive_count']})
-    else:
-        pass
         print('received json: ' + str(json))
 
 
