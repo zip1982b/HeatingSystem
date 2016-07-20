@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+#*********Модель базы данных******************
 from app import db
 
 """ class User это название таблицы в базе app.db
-    id, nickname, email - это наши записи в таблице user (необходимо добавить password)"""
+    id, nickname, email - это наши записи в таблице user"""
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nickname = db.Column(db.String(64), index=True, unique=True)
@@ -33,5 +34,21 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % (self.nickname)
+
+
+
+class SettingsData(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    temperature = db.Column(db.REAL)
+    time1 = db.Column(db.Integer)
+    time2 = db.Column(db.Integer)
+    days_of_week = db.Column(db.String(64))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return '<SettingsData %r>' % (self.temperature)
+
+
+
 
     
