@@ -19,3 +19,15 @@ users = models.User.query.all()
 for u in users:
 ...     db.session.delete(u)
 db.session.commit()
+
+
+
+_____________________________________________________
+
+from app import db, models
+
+>>> u = models.User.query.get(1)
+
+>>> d = models.SettingsData(temperature=22.5, time1='22:05', time2='23:05', days_of_week='Sunday', user_id=u.id)
+>>> db.session.add(d)
+>>> db.session.commit()
