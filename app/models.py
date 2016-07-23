@@ -40,8 +40,8 @@ class User(db.Model):
 class SettingsData(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     temperature = db.Column(db.REAL)
-    time1 = db.Column(db.Integer)
-    time2 = db.Column(db.Integer)
+    time1 = db.Column(db.String)
+    time2 = db.Column(db.String)
     days_of_week = db.Column(db.String(64))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
