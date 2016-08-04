@@ -29,6 +29,7 @@ def load_user(id):
 @appFlask.before_request
 def before_request():
     g.user = current_user
+    print g.user # смотрел что представляет из себя g.user
 
 
 
@@ -42,6 +43,7 @@ def index():
         thread.daemon = True
         thread.start()
     user = g.user
+    #print request - смотрел что представляет из себя request
     return render_template("index.html", title='Home', user=user)
 
 
@@ -102,6 +104,7 @@ def login():
     # не авторизированнный пользователь
     if form.validate_on_submit() and request.method == "POST":
         session['remember_me'] = form.remember_me.data
+        print session, 'this is session' # смотрел что представляет из себя session
         user = get_user(form.user.data, form.password.data)
         if user:
             login_user(user)
