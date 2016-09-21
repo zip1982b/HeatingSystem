@@ -13,7 +13,10 @@ from models import User
 
 
 
-
+def settingsSaveInDB(argSlider, argSet_time2, argSet_time1, argSelectDay):
+    data = models.SettingsData.query.all()
+    for u in data:
+        print u.temperature, u.time1, u.time2, u.days_of_week
 
 
 # Чтобы найти объект User уже авторизованного пользователя, при его последующих запросах исходя из ID который хранится в его сессии.
@@ -58,7 +61,14 @@ def index():
 
 @socketio.on('server receives data', namespace='/temperature_setting')
 def data(json):
+        if len(json)==4:
+            #var1 = json
+            settingsSaveInDB(json['slider1'], json['set_time2'], json['set_time1'], json['selectDay'])
+
+
         print('received json: ' + str(json))
+
+
 
 
 

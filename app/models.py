@@ -51,4 +51,15 @@ class SettingsData(db.Model):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
     

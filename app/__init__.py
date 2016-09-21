@@ -22,6 +22,10 @@ from config import basedir
 
 
 appFlask = Flask(__name__)  # создаём объект приложения (appFlask это экземпляр класса Flask)
+
+
+
+
 appFlask.config.from_object('config')
 db = SQLAlchemy(appFlask)
 
@@ -59,3 +63,4 @@ from app import views, models   # view - импортируем модуль п�
                                 # (из папки app импортируем модуль views.py)
                                 # Почему в конце импорт? чтобы избежать циклических ссылок
                                 # models - (из папки app импортируем модуль models.py)
+print appFlask.url_map
