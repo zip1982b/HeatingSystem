@@ -15,8 +15,40 @@ from models import User
 
 def settingsSaveInDB(argSlider, argSet_time2, argSet_time1, argSelectDay):
     data = models.SettingsData.query.all()
-    for u in data:
-        print u.temperature, u.time1, u.time2, u.days_of_week
+    for set in data:
+        print set.temperature, set.time1, set.time2, set.days_of_week
+
+        # 1 *******************************************************************
+        if argSet_time1 < set.time1:
+            # 2 *****************************************************************
+            if argSet_time2 < set.time1:
+                # оставляем запись в бд и продолжаем проверять другие записи
+                pass
+                print 'Next test 1'
+            else:
+                # удаляем запись из бд
+                db.session.delete(set)
+                db.session.commit()
+                print 'Delete set 1'
+
+        elif argSet_time1 <= set.time2:
+            # удаляем запись из бд
+            db.session.delete(set)
+            db.session.commit()
+            print 'Delete set 2'
+        else:
+            # оставляем запись в бд и продолжаем проверять другие записи
+            pass
+            print 'Next test 2'
+
+    s = models.SettingsData(temperature=float(argSlider), time1=argSet_time1, time2=argSet_time2, days_of_week=argSelectDay)
+    db.session.add(s)
+    db.session.commit()
+
+
+
+
+
 
 
 # Чтобы найти объект User уже авторизованного пользователя, при его последующих запросах исходя из ID который хранится в его сессии.
@@ -63,12 +95,12 @@ def index():
 
 @socketio.on('server receives data', namespace='/temperature_setting')
 def data(json):
-        if len(json)==4:
-            #var1 = json
+    print('received json: ' + str(json))
+    if len(json)==4:
             settingsSaveInDB(json['slider1'], json['set_time2'], json['set_time1'], json['selectDay'])
 
 
-        print('received json: ' + str(json))
+
 
 
 
