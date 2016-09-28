@@ -14,6 +14,7 @@ from models import User
 
 
 def settingsSaveInDB(argSlider, argSet_time2, argSet_time1, argSelectDay):
+    print current_user
     data = models.SettingsData.query.all()
     for set in data:
         print set.temperature, set.time1, set.time2, set.days_of_week
@@ -64,7 +65,7 @@ def load_user(id):
 @appFlask.before_request
 def before_request():
     g.user = current_user
-    print g.user # смотрел что представляет из себя g.user
+    print 'User'+str(g.user) # смотрел что представляет из себя g.user
 
 
 
@@ -97,7 +98,11 @@ def index():
 def data(json):
     print('received json: ' + str(json))
     if len(json)==4:
-            settingsSaveInDB(json['slider1'], json['set_time2'], json['set_time1'], json['selectDay'])
+        settingsSaveInDB(json['slider1'], json['set_time2'], json['set_time1'], json['selectDay'])
+    else:
+        print('received json: ' + str(json))
+
+
 
 
 

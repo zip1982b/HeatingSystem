@@ -9,6 +9,7 @@ class User(db.Model):
     nickname = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password = db.Column(db.String(255))
+    settings_data = db.relationship('SettingsData', backref='author', lazy='dynamic')
 
 
     @property
