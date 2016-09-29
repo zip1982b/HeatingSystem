@@ -42,7 +42,7 @@ def settingsSaveInDB(argSlider, argSet_time2, argSet_time1, argSelectDay):
             pass
             print 'Next test 2'
 
-    s = models.SettingsData(temperature=float(argSlider), time1=argSet_time1, time2=argSet_time2, days_of_week=argSelectDay)
+    s = models.SettingsData(temperature=float(argSlider), time1=argSet_time1, time2=argSet_time2, days_of_week=argSelectDay, author=current_user)
     db.session.add(s)
     db.session.commit()
 
