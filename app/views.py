@@ -14,32 +14,31 @@ from models import User
 
 
 def settingsSaveInDB(argSlider, argSet_time2, argSet_time1, argSelectDay):
-    print current_user
-    data = models.SettingsData.query.all()
-    for set in data:
-        print set.temperature, set.time1, set.time2, set.days_of_week
-
-        # 1 *******************************************************************
+    #d = models.SettingsData.query.all()
+    d = models.SettingsData.query.filter_by(days_of_week=argSelectDay).all()
+    for set in d:
+        #print set.id, set.temperature, set.time1, set.time2, set.days_of_week
+        #*******************************************************************
         if argSet_time1 < set.time1:
             # 2 *****************************************************************
             if argSet_time2 < set.time1:
                 # оставляем запись в бд и продолжаем проверять другие записи
-                pass
                 print 'Next test 1'
             else:
                 # удаляем запись из бд
+                print set.id, set.temperature, set.time1, set.time2, set.days_of_week
                 db.session.delete(set)
                 db.session.commit()
                 print 'Delete set 1'
 
         elif argSet_time1 <= set.time2:
             # удаляем запись из бд
+            print set.id, set.temperature, set.time1, set.time2, set.days_of_week
             db.session.delete(set)
             db.session.commit()
             print 'Delete set 2'
         else:
             # оставляем запись в бд и продолжаем проверять другие записи
-            pass
             print 'Next test 2'
 
     s = models.SettingsData(temperature=float(argSlider), time1=argSet_time1, time2=argSet_time2, days_of_week=argSelectDay, author=current_user)
@@ -65,7 +64,6 @@ def load_user(id):
 @appFlask.before_request
 def before_request():
     g.user = current_user
-    print 'User'+str(g.user) # смотрел что представляет из себя g.user
 
 
 
@@ -96,11 +94,11 @@ def index():
 
 @socketio.on('server receives data', namespace='/temperature_setting')
 def data(json):
-    print('received json: ' + str(json))
     if len(json)==4:
         settingsSaveInDB(json['slider1'], json['set_time2'], json['set_time1'], json['selectDay'])
     else:
         print('received json: ' + str(json))
+
 
 
 
@@ -151,7 +149,6 @@ def login():
     # не авторизированнный пользователь
     if form.validate_on_submit() and request.method == "POST":
         session['remember_me'] = form.remember_me.data
-        print session, 'this is session' # смотрел что представляет из себя session
         user = get_user(form.user.data, form.password.data)
         if user:
             login_user(user)
