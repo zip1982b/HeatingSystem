@@ -4,6 +4,8 @@
 """
 
 # Подключение модулей
+import datetime
+import my_func
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import appFlask, db, models, lm, Thread, background_thread, socketio, emit, disconnect, thread  # из папки app импортируем экземпляр класса Flask
@@ -112,11 +114,21 @@ def data(json):
 
 
 
-# **********отправка сообщения клиенту (в его namespace - temperature_setting)что сервер подключен***************************************************
+# **********отправка сообщения клиенту (в его namespace - temperature_setting)что сервер подключен*********************
 @socketio.on('connect', namespace='/temperature_setting')
 def test_connect():
     emit('Server response', {'data': 'Server is Connected!', 'count': 0})
     print("Server is connected")
+    my_date = datetime.date.today()
+    week_day_int = my_date.isoweekday()
+    day = my_func.week_day[week_day_int]
+    print day
+    my_func.selectSettings(day)
+
+
+
+
+
 
 
 

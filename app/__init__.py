@@ -22,7 +22,7 @@ from config import basedir
 
 
 appFlask = Flask(__name__)  # создаём объект приложения (appFlask это экземпляр класса Flask)
-
+#print __name__
 
 
 
